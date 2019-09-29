@@ -1,9 +1,23 @@
-const http = require('http');
+const adminRoutes = require('./routes/admin')
+const shopRoutes = require('./routes/shop')
 
-const routes = require('./routes');
+const express = require('express');
+const bodyParser = require('body-parser')
 
-console.log(routes.someText);
+const app = express()
+app.use(bodyParser.urlencoded({extended: false}))
 
-const server = http.createServer(routes.handler);
+app.use(adminRoutes)
 
-server.listen(3000);
+app.use(shopRoutes)
+
+app.use((req, res) => {
+    res.status(404).send('<h1>Page not found</h1>')
+})
+
+// app.get('/', (req, res) => {
+//     return res.send('Bla bla bla')
+// })
+
+
+app.listen(3000, () => console.log('slucham slucham'));
